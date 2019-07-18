@@ -21,8 +21,7 @@ public class DelStuServlet extends HttpServlet {
         int i = Integer.parseInt(id);
         StudentService service = new StudentServiceImpl();
         service.delStuById(i);
-        request.getRequestDispatcher("/userListServlet").forward(request,response);
-
+        request.getRequestDispatcher("/findStuByPageServlet").forward(request,response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

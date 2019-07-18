@@ -38,7 +38,7 @@ public class UpdateStuServlet extends HttpServlet {
         StudentService service = new StudentServiceImpl();
         service.updateStudentInfo(student);
         //5.跳转到查询所有学生信息
-        request.getRequestDispatcher("/userListServlet").forward(request,response);
+        request.getRequestDispatcher("/findStuByPageServlet").forward(request,response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

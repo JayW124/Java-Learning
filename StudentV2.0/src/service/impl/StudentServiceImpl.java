@@ -56,4 +56,11 @@ public class StudentServiceImpl implements StudentService {
         pb.setTotalPage(totalPage);
         return pb;
     }
+
+    @Override
+    public void delSelectedStus(String[] ids) {
+        for (String id:ids) {
+            dao.delStuById(Integer.parseInt(id));
+        }
+    }
 }

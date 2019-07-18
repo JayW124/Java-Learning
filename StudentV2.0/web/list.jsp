@@ -36,45 +36,47 @@
     <div style="float: right;margin: 5px;">
 
         <a class="btn btn-primary" href="${pageContext.request.contextPath}/add.jsp">添加联系人</a>
-
+        <a class="btn btn-primary" href="javascript:void(0);" id="delSelected">删除选中</a>
     </div>
 
-    <table border="1" class="table table-bordered table-hover">
+    <form id="form" action="${pageContext.request.contextPath}/delSelectedServlet" method="post">
+        <table border="1" class="table table-bordered table-hover">
 
-        <tr class="success">
-            <th><input type="checkbox" id="checkbox"></th>
-            <th>id</th>
-            <th>姓名</th>
-            <th>学号</th>
-            <th>性别</th>
-            <th>院系</th>
-            <th>籍贯</th>
-            <th>学分</th>
-            <th>电子邮件</th>
-            <th>联系方式</th>
-            <th>操作</th>
-        </tr>
-
-        <%--        <c:forEach items="${students}" var="student" varStatus="s">--%>
-        <c:forEach items="${pb.list}" var="student" varStatus="s">
-
-            <tr>
-                <td><input type="checkbox" name="id" value="${student.id}"></td>
-                <td>${s.count}</td>
-                <td>${student.name}</td>
-                <td>${student.sno}</td>
-                <td>${student.department}</td>
-                <td>${student.hometown}</td>
-                <td>${student.mark}</td>
-                <td>${student.email}</td>
-                <td>${student.tel}</td>
-                <td>${student.sex}</td>
-                <td><a class="btn btn-default btn-sm"
-                       href="${pageContext.request.contextPath}/findStuServlet?id=${student.id}">修改</a>
-                    <a class="btn btn-default btn-sm" href="javascript:deleteUser(${student.id});">删除</a></td>
+            <tr class="success">
+                <th><input type="checkbox" id="checkbox"></th>
+                <th>id</th>
+                <th>姓名</th>
+                <th>学号</th>
+                <th>性别</th>
+                <th>院系</th>
+                <th>籍贯</th>
+                <th>学分</th>
+                <th>电子邮件</th>
+                <th>联系方式</th>
+                <th>操作</th>
             </tr>
-        </c:forEach>
-    </table>
+
+            <%--        <c:forEach items="${students}" var="student" varStatus="s">--%>
+            <c:forEach items="${pb.list}" var="student" varStatus="s">
+
+                <tr>
+                    <td><input type="checkbox" name="id" value="${student.id}"></td>
+                    <td>${s.count}</td>
+                    <td>${student.name}</td>
+                    <td>${student.sno}</td>
+                    <td>${student.department}</td>
+                    <td>${student.hometown}</td>
+                    <td>${student.mark}</td>
+                    <td>${student.email}</td>
+                    <td>${student.tel}</td>
+                    <td>${student.sex}</td>
+                    <td><a class="btn btn-default btn-sm"
+                           href="${pageContext.request.contextPath}/findStuServlet?id=${student.id}">修改</a>
+                        <a class="btn btn-default btn-sm" href="javascript:deleteUser(${student.id});">删除</a></td>
+                </tr>
+            </c:forEach>
+        </table>
+    </form>
 
     <div align="center">
         <nav aria-label="Page navigation example">
@@ -128,6 +130,43 @@
 </div>
 
 <script>
+    window.onload = function(){
+        //给删除选中按钮添加单击事件
+        document.getElementById("delSelected").onclick = function(){
+            if(confirm("您确定要删除选中条目吗？")){
+
+                var flag = false;
+                //判断是否有选中条目
+                var cbs = document.getElementsByName("id");
+                console.log(cbs);
+                for (var i = 0; i < cbs.length; i++) {
+                    if(cbs[i].checked){
+                        //有一个条目选中了
+                        flag = true;
+                        break;
+                    }
+                }
+
+                if(flag){//有条目被选中
+                    //表单提交
+                    document.getElementById("form").submit();
+                }
+
+            }
+
+        };
+        //1.获取第一个cb
+        document.getElementById("checkbox").onclick = function(){
+            //2.获取下边列表中所有的cb
+            var cbs = document.getElementsByName("id");
+            //3.遍历
+            for (var i = 0; i < cbs.length; i++) {
+                //4.设置这些cbs[i]的checked状态 = firstCb.checked
+                cbs[i].checked = this.checked;
+            }
+        }
+    };
+
     function deleteUser(id) {
         if (confirm("确定删除该用户？")) {
             location.href = "${pageContext.request.contextPath}/delStuServlet?id=" + id;
@@ -143,6 +182,8 @@
         var pageNum = (curPage + 1) > ${pb.totalPage} ? curPage : curPage + 1;
         location.href = "${pageContext.request.contextPath}/findStuByPageServlet?curPage=" + pageNum + "&pageNum=5";
     }
+
+
 </script>
 </body>
 </html>

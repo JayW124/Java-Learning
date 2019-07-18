@@ -16,4 +16,5 @@ public interface StudentService {
     public void delStuById(int id);
     public void addStu(Student stu);
     public PageBean findByPage(String curPage,String rows);
+    public void delSelectedStus(String[] ids);
 }
